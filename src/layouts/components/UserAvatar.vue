@@ -33,19 +33,19 @@ const permissionStore = usePermissionStore()
 
 const options = reactive([
   {
-    label: '个人资料',
+    label: 'Thông tin người dùng',
     key: 'profile',
     icon: () => h('i', { class: 'i-material-symbols:person-outline text-14' }),
     show: computed(() => permissionStore.accessRoutes?.some((item) => item.path === '/profile')),
   },
   {
-    label: '切换角色',
+    label: 'Thay đổi Role',
     key: 'toggleRole',
     icon: () => h('i', { class: 'i-basil:exchange-solid text-14' }),
     show: computed(() => userStore.roles.length > 1),
   },
   {
-    label: '退出登录',
+    label: 'Đăng xuất',
     key: 'logout',
     icon: () => h('i', { class: 'i-mdi:exit-to-app text-14' }),
   },
@@ -68,9 +68,9 @@ function handleSelect(key) {
       break
     case 'logout':
       $dialog.confirm({
-        title: '提示',
+        title: 'Thông tin',
         type: 'info',
-        content: '确认退出？',
+        content: 'Bạn muốn đăng xuất phải không?',
         async confirm() {
           try {
             await api.logout()
@@ -78,7 +78,7 @@ function handleSelect(key) {
             console.error(error)
           }
           authStore.logout()
-          $message.success('已退出登录')
+          $message.success('Đăng xuất thành công.')
         },
       })
       break

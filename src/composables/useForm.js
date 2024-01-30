@@ -12,7 +12,7 @@ export const useForm = (initFormData = {}) => {
   const rules = {
     required: {
       required: true,
-      message: '此为必填项',
+      message: 'Bắt buộc phải nhập',
       trigger: ['blur', 'change'],
     },
   }

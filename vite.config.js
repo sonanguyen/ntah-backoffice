@@ -44,9 +44,7 @@ export default defineConfig(({ command, mode }) => {
           },
         },
       }),
-      // 自定义插件，用于生成页面文件的path，并添加到虚拟模块
       pluginPagePathes(),
-      // 自定义插件，用于生成自定义icon，并添加到虚拟模块
       pluginIcons(),
     ],
     resolve: {
@@ -65,7 +63,16 @@ export default defineConfig(({ command, mode }) => {
           changeOrigin: true,
           rewrite: (path) => path.replace(new RegExp('^/api'), ''),
           configure: (proxy, options) => {
-            // 配置此项可在响应头中看到请求的真实地址
+            proxy.on('proxyRes', (proxyRes, req) => {
+              proxyRes.headers['x-real-url'] = new URL(req.url || '', options.target)?.href || ''
+            })
+          },
+        },
+        '/backoffice': {
+          target: VITE_PROXY_TARGET,
+          changeOrigin: true,
+          // rewrite: (path) => path.replace(new RegExp('^/bo'), ''),
+          configure: (proxy, options) => {
             proxy.on('proxyRes', (proxyRes, req) => {
               proxyRes.headers['x-real-url'] = new URL(req.url || '', options.target)?.href || ''
             })
@@ -74,7 +81,7 @@ export default defineConfig(({ command, mode }) => {
       },
     },
     build: {
-      chunkSizeWarningLimit: 1024, // chunk 大小警告的限制（单位kb）
+      chunkSizeWarningLimit: 1024,
     },
   }
 })

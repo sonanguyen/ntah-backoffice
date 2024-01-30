@@ -24,7 +24,7 @@
                 @click="router.back()"
               >
                 <i class="i-material-symbols:arrow-left-alt" />
-                <span class="ml-4">返回</span>
+                <span class="ml-4">Quay lại</span>
               </div>
             </template>
             <div class="mr-12 h-16 w-4 rounded-l-2 bg-primary"></div>

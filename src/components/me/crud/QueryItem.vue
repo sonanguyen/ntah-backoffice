@@ -7,13 +7,12 @@
  --------------------------------->
 
 <template>
-  <div class="flex items-center">
-    <label v-if="label || label === 0" class="flex-shrink-0" :style="{ width: labelWidth + 'px' }">
-      {{ label }}
-    </label>
-    <div :style="{ width: contentWidth + 'px' }" class="flex-shrink-0">
-      <slot />
-    </div>
+  <div class="flex items-start"  :style="{'min-width': minWidth+'px','max-width': maxWidth+'px'}">
+    <n-grid>
+      <n-form-item-gi :span="24" :x-gap="24" :label="label" class="mt-12">
+        <slot />    
+      </n-form-item-gi>
+    </n-grid>
   </div>
 </template>
 
@@ -23,11 +22,11 @@ defineProps({
     type: String,
     default: '',
   },
-  labelWidth: {
+  minWidth: {
     type: Number,
     default: 80,
   },
-  contentWidth: {
+  maxWidth: {
     type: Number,
     default: 220,
   },

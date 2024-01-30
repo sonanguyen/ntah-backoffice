@@ -7,7 +7,7 @@
  --------------------------------->
 
 <template>
-  <MeModal ref="modalRef" title="请选择角色" width="360px" class="p-12">
+  <MeModal ref="modalRef" title="Chọn Role chuyển qua" width="360px" class="p-12">
     <n-radio-group v-model:value="roleCode" class="cus-scroll-y max-h-420 w-full py-16">
       <n-space vertical :size="24" class="mx-12">
         <n-radio-button
@@ -24,7 +24,7 @@
 
     <template #footer>
       <div class="flex">
-        <n-button class="flex-1" size="large" @click="logout()">退出登录</n-button>
+        <n-button class="flex-1" size="large" @click="logout()">Đăng xuất</n-button>
         <n-button
           :loading="okLoading"
           class="ml-20 flex-1"
@@ -33,7 +33,7 @@
           :disabled="userStore.currentRole?.code === roleCode"
           @click="setCurrentRole"
         >
-          确认
+          Xác nhận
         </n-button>
       </div>
     </template>
@@ -65,7 +65,7 @@ async function setCurrentRole() {
     const { data } = await api.switchCurrentRole(roleCode.value)
     await authStore.switchCurrentRole(data)
     okLoading.value = false
-    $message.success('切换成功')
+    $message.success('Chuyển đổi thành công.')
     modalRef.value?.handleOk()
   } catch (error) {
     console.error(error)
@@ -78,7 +78,7 @@ async function logout() {
   await api.logout()
   authStore.logout()
   modalRef.value?.close()
-  $message.success('已退出登录')
+  $message.success('Đăng xuất thành công.')
 }
 
 defineExpose({

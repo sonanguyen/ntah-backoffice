@@ -46,31 +46,31 @@ const tabStore = useTabStore()
 
 const options = computed(() => [
   {
-    label: '重新加载',
+    label: 'Reload',
     key: 'reload',
     disabled: props.currentPath !== tabStore.activeTab,
     icon: () => h('i', { class: 'i-mdi:refresh text-14' }),
   },
   {
-    label: '关闭',
+    label: 'Đóng',
     key: 'close',
     disabled: tabStore.tabs.length <= 1,
     icon: () => h('i', { class: 'i-mdi:close text-14' }),
   },
   {
-    label: '关闭其他',
+    label: 'Đóng tabs khác',
     key: 'close-other',
     disabled: tabStore.tabs.length <= 1,
     icon: () => h('i', { class: 'i-mdi:arrow-expand-horizontal text-14' }),
   },
   {
-    label: '关闭左侧',
+    label: 'Đóng tabs bên trái',
     key: 'close-left',
     disabled: tabStore.tabs.length <= 1 || props.currentPath === tabStore.tabs[0].path,
     icon: () => h('i', { class: 'i-mdi:arrow-expand-left text-14' }),
   },
   {
-    label: '关闭右侧',
+    label: 'Đóng tabs bên phải',
     key: 'close-right',
     disabled:
       tabStore.tabs.length <= 1 ||

@@ -22,7 +22,7 @@ export const useTabStore = defineStore('tab', {
   },
   actions: {
     async setActiveTab(path) {
-      await nextTick() // tab栏dom更新完再设置激活，让tab栏定位到新增的tab上生效
+      await nextTick() 
       this.activeTab = path
     },
     setTabs(tabs) {
@@ -40,7 +40,6 @@ export const useTabStore = defineStore('tab', {
     async reloadTab(path, keepAlive) {
       const findItem = this.tabs.find((item) => item.path === path)
       if (!findItem) return
-      // 更新key可让keepAlive失效
       if (keepAlive) findItem.keepAlive = false
       $loadingBar.start()
       this.reloading = true

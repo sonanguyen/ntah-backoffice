@@ -9,7 +9,7 @@
 import { request } from '@/utils'
 
 export default {
-  toggleRole: (data) => request.post('/auth/role/toggle', data),
-  login: (data) => request.post('/auth/login', data, { noNeedToken: true }),
-  getUser: () => request.get('/user/detail'),
+  toggleRole: (data) => request.post('/apibo/auth/role/toggle', data),
+  login: (data) => request.post('/backoffice/auth/login', data, { noNeedToken: true }),
+  getUser: () => request.get('/apibo/user/detail'),
 }

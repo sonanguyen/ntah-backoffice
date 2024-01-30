@@ -15,7 +15,7 @@ export function setupMessage(NMessage) {
   class Message {
     static instance
     constructor() {
-      // 单例模式
+      // Singleton
       if (Message.instance) return Message.instance
       Message.instance = this
       this.message = {}
@@ -89,8 +89,8 @@ export function setupDialog(NDialog) {
     const showIcon = !isNullOrUndef(option.title)
     return NDialog[option.type || 'warning']({
       showIcon,
-      positiveText: '确定',
-      negativeText: '取消',
+      positiveText: 'OK',
+      negativeText: 'Cancel',
       onPositiveClick: option.confirm,
       onNegativeClick: option.cancel,
       onMaskClick: option.cancel,
@@ -107,9 +107,18 @@ export function setupNaiveDiscreteApi() {
     theme: appStore.isDark ? NaiveUI.darkTheme : undefined,
     themeOverrides: useAppStore().naiveThemeOverrides,
   }))
+
+  const messageProviderProps = computed(() => ({
+    placement: appStore.msgPlacement
+  }))
+
+  const notificationProviderProps = computed(() => ({
+    placement: appStore.notiPlacement
+  }))
+
   const { message, dialog, notification, loadingBar } = NaiveUI.createDiscreteApi(
     ['message', 'dialog', 'notification', 'loadingBar'],
-    { configProviderProps }
+    { configProviderProps, messageProviderProps,notificationProviderProps }
   )
 
   window.$loadingBar = loadingBar

@@ -10,10 +10,9 @@ import { request } from '@/utils'
 
 export default {
   create: (data) => request.post('/user', data),
-  read: (params = {}) => request.get('/user', { params }),
-  update: (data) => request.patch(`/user/${data.id}`, data),
+  read: (params = {}) => request.get('/apibo/user', { params }),
+  update: (data) => request.patch(`/apibo/user/${data.id}`, data),
   delete: (id) => request.delete(`/user/${id}`),
-  resetPwd: (id, data) => request.patch(`/user/password/reset/${id}`, data),
-
-  getAllRoles: () => request.get('/role?enable=1'),
+  resetPwd: (id, data) => request.patch(`/apibo/user/password/reset/${id}`, data),
+  getAllRoles: () => request.get('/apibo/role?enable=1'),
 }

@@ -22,7 +22,6 @@
       </template>
       <slot></slot>
 
-      <!-- 底部按钮 -->
       <template #footer>
         <slot v-if="$slots.footer" name="footer" />
         <footer v-else-if="modalOptions.showFooter" class="flex justify-end">
@@ -61,11 +60,11 @@ const props = defineProps({
   },
   cancelText: {
     type: String,
-    default: '取消',
+    default: 'Hủy bỏ',
   },
   okText: {
     type: String,
-    default: '确定',
+    default: 'Đồng ý',
   },
   showFooter: {
     type: Boolean,
@@ -96,17 +95,12 @@ const props = defineProps({
     default: () => {},
   },
 })
-// 声明一个show变量，用于控制模态框的显示与隐藏
 const show = ref(false)
-// 声明一个modalOptions变量，用于存储模态框的配置信息
 const modalOptions = ref({})
 
-// 打开模态框
 async function open(options = {}) {
-  // 将props和options合并赋值给modalOptions
   modalOptions.value = { ...props, ...options }
 
-  // 将show的值设置为true
   show.value = true
   await nextTick()
   initDrag(
@@ -115,21 +109,16 @@ async function open(options = {}) {
   )
 }
 
-// 定义一个close函数，用于关闭模态框
 function close() {
   show.value = false
 }
 
-// 定义一个handleOk函数，用于处理模态框确定操作
 async function handleOk(data) {
-  // 如果modalOptions中没有onOk函数，则直接关闭模态框
   if (typeof modalOptions.value.onOk !== 'function') {
     return close()
   }
   try {
-    // 调用onOk函数，传入data参数
     const res = await modalOptions.value.onOk(data)
-    // 如果onOk函数的返回值不为false，则关闭模态框
     res !== false && close()
   } catch (error) {
     okLoading.value = false
@@ -137,17 +126,13 @@ async function handleOk(data) {
   }
 }
 
-// 定义一个handleCancel函数，用于处理模态框取消操作
 async function handleCancel(data) {
-  // 如果modalOptions中没有onCancel函数，则直接关闭模态框
   if (typeof modalOptions.value.onCancel !== 'function') {
     return close()
   }
   try {
-    // 调用onCancel函数，传入data参数
     const res = await modalOptions.value.onCancel(data)
 
-    // 如果onCancel函数的返回值不为false，则关闭模态框
     res !== false && close()
   } catch (error) {
     okLoading.value = false
@@ -174,7 +159,6 @@ const okLoading = computed({
   },
 })
 
-// 定义一个defineExpose函数，用于暴露open、close、handleOk、handleCancel函数
 defineExpose({
   open,
   close,

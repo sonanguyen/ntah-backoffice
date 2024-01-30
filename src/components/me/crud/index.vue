@@ -14,16 +14,17 @@
     class="mb-30 min-h-60 flex justify-between rounded-4 p-16"
   >
     <n-space wrap :size="[32, 16]">
-      <slot />
+      <slot></slot>
     </n-space>
-    <div class="flex-shrink-0">
-      <n-button ghost type="primary" @click="handleReset">
-        <i class="i-fe:rotate-ccw mr-4" />
-        重置
+    <div class="flex flex-shrink-0 flex-items-center">
+      <n-button class="ml-10" ghost type="primary" @click="handleSearch">
+        <i class="i-fe:search mr-4"></i>
       </n-button>
-      <n-button class="ml-20" type="primary" @click="handleSearch">
-        <i class="i-fe:search mr-4" />
-        搜索
+      <n-button class="ml-10" ghost type="primary" @click="handleExport">
+        <i class="i-fe:file-excel mr-4"></i>
+      </n-button>
+      <n-button class="ml-10" ghost type="primary" @click="handleReset">
+        <i class="i-fe:rotate-ccw mr-4"></i>
       </n-button>
     </div>
   </AppCard>
@@ -36,8 +37,10 @@
     :data="tableData"
     :row-key="(row) => row[rowKey]"
     :pagination="isPagination ? pagination : false"
+    :children-key="childrenKey"
     @update:checked-row-keys="onChecked"
     @update:page="onPageChange"
+    @update:sorter="onSorterChange"
   />
 </template>
 
@@ -53,10 +56,18 @@ const props = defineProps({
     type: Boolean,
     default: true,
   },
+  childrenKey: {
+    type: String,
+    default: 'children',
+  },
   /**
    * @remote 是否分页
    */
   isPagination: {
+    type: Boolean,
+    default: true,
+  },
+  isSortable: {
     type: Boolean,
     default: true,
   },
@@ -79,15 +90,6 @@ const props = defineProps({
       return {}
     },
   },
-  /**
-   * ! 约定接口入参出参
-   * * 分页模式需约定分页接口入参
-   *    @pageSize 分页参数：一页展示多少条，默认10
-   *    @pageNo   分页参数：页码，默认1
-   * * 需约定接口出参
-   *    @pageData 分页模式必须,非分页模式如果没有pageData则取上一层data
-   *    @total    分页模式必须，非分页模式如果没有total则取上一层data.length
-   */
   getData: {
     type: Function,
     required: true,
@@ -99,6 +101,8 @@ const loading = ref(false)
 const initQuery = { ...props.queryItems }
 const tableData = ref([])
 const pagination = reactive({ page: 1, pageSize: 10 })
+const columnsRef = ref(props.columns)
+const reactiveSorter = reactive({columnKey:'product_name',order: true,sorter: 'default'})
 
 async function handleQuery() {
   try {
@@ -108,9 +112,15 @@ async function handleQuery() {
     if (props.isPagination && props.remote) {
       paginationParams = { pageNo: pagination.page, pageSize: pagination.pageSize }
     }
+    let sortParams = {};
+    if (props.isSortable && props.remote) {
+      sortParams = { sortOrder: `${reactiveSorter.columnKey}${reactiveSorter.order == 'ascend'?'':' desc'}` }
+    }
+
     const { data } = await props.getData({
       ...props.queryItems,
       ...paginationParams,
+      ...sortParams
     })
     tableData.value = data?.pageData || data
     pagination.itemCount = data.total ?? data.length
@@ -136,6 +146,14 @@ async function handleReset() {
   pagination.page = 1
   handleQuery()
 }
+
+function onSorterChange(sorter) {
+  if(reactiveSorter.columnKey == sorter.columnKey) reactiveSorter.order = sorter.order;
+  if (props.remote) {
+    handleQuery()
+  }
+}
+
 function onPageChange(currentPage) {
   pagination.page = currentPage
   if (props.remote) {
@@ -148,15 +166,17 @@ function onChecked(rowKeys) {
   }
 }
 function handleExport(columns = props.columns, data = tableData.value) {
-  if (!data?.length) return $message.warning('没有数据')
-  const columnsData = columns.filter((item) => !!item.title && !item.hideInExcel)
+  console.log("Columns: ", props.columns);
+  console.log("Data: ", data);
+  if (!data?.length) return $message.warning('Không có dữ liệu.')
+  const columnsData = props.columns.filter((item) => !!item.title && !item.hideInExcel)
   const thKeys = columnsData.map((item) => item.key)
   const thData = columnsData.map((item) => item.title)
   const trData = data.map((item) => thKeys.map((key) => item[key]))
   const sheet = utils.aoa_to_sheet([thData, ...trData])
   const workBook = utils.book_new()
-  utils.book_append_sheet(workBook, sheet, '数据报表')
-  writeFile(workBook, '数据报表.xlsx')
+  utils.book_append_sheet(workBook, sheet, 'Dữ liệu báo cáo')
+  writeFile(workBook, 'ReportData.xlsx')
 }
 
 defineExpose({

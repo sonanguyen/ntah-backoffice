@@ -15,7 +15,7 @@
       <div class="flex items-center">
         <n-button :disabled="!userIds.length" type="error" @click="handleBatchRemove()">
           <i v-if="userIds.length" class="i-material-symbols:delete-outline mr-4 text-18" />
-          批量取消授权
+          Hủy cấp quyền hàng loạt
         </n-button>
         <n-button
           class="ml-12"
@@ -24,7 +24,7 @@
           @click="handleBatchAdd()"
         >
           <i v-if="userIds.length" class="i-line-md:confirm-circle mr-4 text-18" />
-          批量授权
+          Cấp phép hàng loạt
         </n-button>
       </div>
     </template>
@@ -37,27 +37,27 @@
       :get-data="api.getAllUsers"
       @on-checked="onChecked"
     >
-      <MeQueryItem label="用户名" :label-width="50">
+      <MeQueryItem label="Tên tài khoản" :label-width="50">
         <n-input
           v-model:value="queryItems.username"
           type="text"
-          placeholder="请输入用户名"
+          placeholder="Nhập tên tài khoản"
           clearable
           @keydown.enter="() => $table?.handleSearch"
         />
       </MeQueryItem>
 
-      <MeQueryItem label="性别" :label-width="50">
+      <MeQueryItem label="Giới tính" :label-width="50">
         <n-select v-model:value="queryItems.gender" clearable :options="genders" />
       </MeQueryItem>
 
-      <MeQueryItem label="状态" :label-width="50">
+      <MeQueryItem label="Tình trạng" :label-width="50">
         <n-select
           v-model:value="queryItems.enable"
           clearable
           :options="[
-            { label: '启用', value: 1 },
-            { label: '停用', value: 0 },
+            { label: 'Cho phép', value: 1 },
+            { label: 'Không cho phép', value: 0 },
           ]"
         />
       </MeQueryItem>
@@ -76,7 +76,6 @@ defineOptions({ name: 'RoleUser' })
 const route = useRoute()
 
 const $table = ref(null)
-/** QueryBar筛选参数（可选） */
 const queryItems = ref({})
 
 onMounted(() => {
@@ -84,14 +83,14 @@ onMounted(() => {
 })
 
 const genders = [
-  { label: '男', value: 1 },
-  { label: '女', value: 2 },
+  { label: 'Nam', value: 1 },
+  { label: 'Nữ', value: 2 },
 ]
 
 const columns = [
   { type: 'selection', fixed: 'left' },
   {
-    title: '头像',
+    title: 'Hình đại diện',
     key: 'avatar',
     width: 80,
     render: ({ avatar }) =>
@@ -100,9 +99,9 @@ const columns = [
         src: avatar,
       }),
   },
-  { title: '用户名', key: 'username', width: 150, ellipsis: { tooltip: true } },
+  { title: 'Tên tài khoản', key: 'username', width: 150, ellipsis: { tooltip: true } },
   {
-    title: '角色',
+    title: 'Roles',
     key: 'roles',
     width: 200,
     ellipsis: { tooltip: true },
@@ -116,17 +115,17 @@ const columns = [
           )
         )
       }
-      return '暂无角色'
+      return 'Chưa có role nào!'
     },
   },
   {
-    title: '性别',
+    title: 'Giới tính',
     key: 'gender',
     width: 80,
     render: ({ gender }) => genders.find((item) => gender === item.value)?.label ?? '',
   },
   {
-    title: '创建时间',
+    title: 'Ngày tạo',
     key: 'createDate',
     width: 180,
     render(row) {
@@ -134,7 +133,7 @@ const columns = [
     },
   },
   {
-    title: '状态',
+    title: 'Tình trạng',
     key: 'enable',
     width: 100,
 
@@ -147,13 +146,13 @@ const columns = [
           value: row.enable,
         },
         {
-          checked: () => '启用',
-          unchecked: () => '停用',
+          checked: () => 'Chp phép',
+          unchecked: () => 'Không',
         }
       ),
   },
   {
-    title: '操作',
+    title: 'Hành động',
     key: 'actions',
     width: 100,
     align: 'right',
@@ -170,7 +169,7 @@ const columns = [
               onClick: () => handleBatchRemove([row.id]),
             },
             {
-              default: () => '取消授权',
+              default: () => 'Hủy ủy quyền',
               icon: () => h('i', { class: 'i-material-symbols:delete-outline text-14' }),
             }
           )
@@ -183,7 +182,7 @@ const columns = [
               onClick: () => handleBatchAdd([row.id]),
             },
             {
-              default: () => '授权',
+              default: () => 'Ủy quyền',
               icon: () => h('i', { class: 'i-line-md:confirm-circle text-14' }),
             }
           )
@@ -198,10 +197,10 @@ function onChecked(rowKeys) {
 
 function handleBatchAdd(ids = userIds.value) {
   const roleId = route.params.roleId
-  if (!roleId) return $message.error('角色异常，请重新选择角色')
-  if (!ids.length) return $message.error('请先选择用户')
+  if (!roleId) return $message.error('Vai trò không hợp lý. Chọn lại vai trò khác')
+  if (!ids.length) return $message.error('Vui lòng chọn tài khoản trước')
   $dialog.confirm({
-    content: `确认分配【${route.query.roleName}】？`,
+    content: `Xác nhận quyền【${route.query.roleName}】？`,
     async confirm() {
       await api.addRoleUsers(roleId, { userIds: ids })
       $table.value?.handleSearch()
@@ -210,10 +209,10 @@ function handleBatchAdd(ids = userIds.value) {
 }
 function handleBatchRemove(ids = userIds.value) {
   const roleId = route.params.roleId
-  if (!roleId) return $message.error('角色异常，请重新选择角色')
-  if (!ids.length) return $message.error('请先选择用户')
+  if (!roleId) return $message.error('Vai trò không hợp lý. Chọn lại vai trò khác')
+  if (!ids.length) return $message.error('Vui lòng chọn tài khoản trước')
   $dialog.confirm({
-    content: `确认取消分配【${route.query.roleName}】？`,
+    content: `Xác nhận xóa quyền【${route.query.roleName}】？`,
     async confirm() {
       await api.removeRoleUsers(roleId, { userIds: ids })
       $table.value?.handleSearch()

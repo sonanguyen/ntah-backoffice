@@ -16,12 +16,12 @@ export function resolveResError(code, message) {
       if (isConfirming) return
       isConfirming = true
       $dialog.confirm({
-        title: '提示',
+        title: 'Xác nhận',
         type: 'info',
-        content: '登录已过期，是否重新登录？',
+        content: 'Đăng nhập đã hết hạn. Bạn có muốn đăng nhập lại không?',
         confirm() {
           useAuthStore().logout()
-          window.$message?.success('已退出登录')
+          window.$message?.success('Đã đăng xuất.')
           isConfirming = false
         },
         cancel() {
@@ -34,12 +34,12 @@ export function resolveResError(code, message) {
       if (isConfirming) return
       isConfirming = true
       $dialog.confirm({
-        title: '提示',
+        title: 'Xác nhận',
         type: 'info',
-        content: `${message}，是否重新登录？`,
+        content: `${message}，Bạn có muốn đăng nhập lại không?`,
         confirm() {
           useAuthStore().logout()
-          window.$message?.success('已退出登录')
+          window.$message?.success('Đã đăng xuất.')
           isConfirming = false
         },
         cancel() {
@@ -48,16 +48,16 @@ export function resolveResError(code, message) {
       })
       return false
     case 403:
-      message = '请求被拒绝'
+      message = 'Yêu cầu bị từ chối.'
       break
     case 404:
-      message = '请求资源或接口不存在'
+      message = 'Thông tin không tồn tại.'
       break
     case 500:
-      message = '服务器发生异常'
+      message = 'Lỗi phía máy chủ.'
       break
     default:
-      message = message ?? `【${code}】: 未知异常!`
+      message = message ?? `【${code}】: Lỗi không xác định!`
       break
   }
   return message

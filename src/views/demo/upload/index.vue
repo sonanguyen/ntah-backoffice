@@ -18,7 +18,7 @@
       <n-upload-dragger>
         <div class="h-150 f-c-c flex-col">
           <i class="i-mdi:upload mb-12 text-68 color-primary" />
-          <n-text class="text-14 color-gray">点击或者拖动文件到该区域来上传</n-text>
+          <n-text class="text-14 color-gray">Nhấn hoặc thả tập tin vào đây để tải lên.</n-text>
         </div>
       </n-upload-dragger>
     </n-upload>
@@ -65,12 +65,12 @@ const imgList = reactive([
 ])
 
 watch(copied, (val) => {
-  val && $message.success('已复制到剪切板')
+  val && $message.success('Copied')
 })
 
 function onBeforeUpload({ file }) {
   if (!file.file?.type.startsWith('image/')) {
-    $message.error('只能上传图片')
+    $message.error('Chỉ có thể tải lên hình ảnh')
     return false
   }
   return true
@@ -78,13 +78,13 @@ function onBeforeUpload({ file }) {
 
 async function handleUpload({ file, onFinish }) {
   if (!file || !file.type) {
-    $message.error('请选择文件')
+    $message.error('Vui lòng chọn tập tin')
   }
 
   // 模拟上传
-  $message.loading('上传中...')
+  $message.loading('Đang tải lên...')
   setTimeout(() => {
-    $message.success('上传成功')
+    $message.success('Tải lên thành công')
     imgList.push({ fileName: file.name, url: URL.createObjectURL(file.file) })
     onFinish()
   }, 1500)

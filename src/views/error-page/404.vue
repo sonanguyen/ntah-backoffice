@@ -12,12 +12,12 @@
       <n-result
         m-auto
         status="404"
-        title="404 您访问的页面不存在"
-        description="生活总归带点荒谬"
+        title="404 Trang bạn truy cập không tồn tại"
+        description="Funny!"
         size="large"
       >
         <template #footer>
-          <n-button type="primary" ghost @click="replace('/')">返回首页</n-button>
+          <n-button type="primary" ghost @click="replace('/')">Trở về trang chủ</n-button>
         </template>
       </n-result>
     </div>

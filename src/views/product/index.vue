@@ -1,9 +1,9 @@
 <!--------------------------------
- - @Author: Ronnie Zhang
- - @LastEditor: Ronnie Zhang
- - @LastEditTime: 2023/12/05 21:29:56
- - @Email: zclzone@outlook.com
- - Copyright © 2023 Ronnie Zhang(大脸怪) | https://isme.top
+ - @Author: Son Nguyen
+ - @LastEditor: Son Nguyen
+ - @LastEditTime: 2024/01/30 21:29:56
+ - @Email: sonanguyen@gmail.com
+ - Copyright © 2024 Anh Huy Software
  --------------------------------->
 
 <template>
@@ -16,35 +16,43 @@
     </template>
 
     <MeCrud
-      ref="$table"
+      ref="$productTable"
       v-model:query-items="queryItems"
       :scroll-x="1200"
       :columns="columns"
       :get-data="api.read"
       @update:query-items="handleAfterRefresh"
     >
-      <MeQueryItem label="Tên người dùng" :min-width="200">
+      <MeQueryItem label="Tên sản phẩm" :min-width="200">
         <n-input
-          v-model:value="queryItems.username"
+          v-model:value="queryItems.product_name"
           type="text"
-          placeholder="Vui lòng nhập tên người dùng"
+          placeholder="Nhập tên sản phẩm"
           clearable
           @keydown.enter="() => $table?.handleSearch"
         />
       </MeQueryItem>
 
-      <MeQueryItem label="Giới tính" :min-width="100">
-        <n-select v-model:value="queryItems.gender" clearable :options="genders" />
+      <MeQueryItem label="Hoạt động" :min-width="100">
+        <n-select v-model:value="queryItems.active" clearable :options="productActivates" />
       </MeQueryItem>
 
-      <MeQueryItem label="Tình trạng" :min-width="100">
+      <MeQueryItem label="Đại lý" :min-width="250">
         <n-select
-          v-model:value="queryItems.enable"
+          v-model:value="queryItems.agency_id"
           clearable
-          :options="[
-            { label: 'Bật', value: 1 },
-            { label: 'Tắt', value: 0 },
-          ]"
+          :options="agencies"
+          label-field="brand_name"
+          value-field="id"
+        />
+      </MeQueryItem>
+      <MeQueryItem label="Danh mục" :min-width="250">
+        <n-select
+          v-model:value="queryItems.category_id"
+          clearable
+          :options="categories"
+          label-field="cat_name"
+          value-field="id"
         />
       </MeQueryItem>
     </MeCrud>
@@ -108,100 +116,171 @@
 </template>
 
 <script setup>
-import { NAvatar, NButton, NSwitch, NTag } from 'naive-ui'
-import { formatDateTime } from '@/utils'
+import { NP, NButton, NSwitch, NTag, NDataTable } from 'naive-ui'
+import { formatDateTime,formatCurrency } from '@/utils'
 import { MeCrud, MeQueryItem, MeModal } from '@/components'
 import { useCrud } from '@/composables'
 import api from './api'
+import { h } from 'vue'
 
-defineOptions({ name: 'UserMgt' })
+defineOptions({ name: 'ProductMgt' })
 
-const $table = ref(null)
+const $productTable = ref(null)
 const queryItems = ref({})
 
 onMounted(() => {
-  $table.value?.handleSearch()
+  $productTable.value?.handleSearch()
 })
 
-const genders = [
-  { label: '-', value: -1 },
-  { label: 'Nam', value: 1 },
-  { label: 'Nữ', value: 2 },
+const productActivates = [
+  { label: 'Tất cả', value: null },
+  { label: 'Đang hoạt động', value: true },
+  { label: 'Không hoạt động', value: false },
 ]
-const roles = ref([])
-api.getAllRoles().then(({ data = [] }) => (roles.value = data))
+
+const agencies = ref([])
+api.getAllAgencies().then(({ data = [] }) => (agencies.value = data))
+
+const categories = ref([])
+api.getAllCategories().then(({ data = [] }) => (categories.value = data))
+
+const skusCols = [
+  { title: 'SKU',
+    key: 'sku_id',
+    width: 80,
+    ellipsis: { tooltip: true },    
+  },
+  { title: 'Tên SKU',
+    key: 'sku',
+    width: 80,
+    ellipsis: { tooltip: true }
+  },
+  { title: 'Default?',
+    key: 'isdefault',
+    align: 'center',
+    width: 60,
+    render(row) {
+          return h(
+            NTag,
+            { type: 'success', size: 'small', style: '' },
+            { default: () => row.isdefault?"Yes":"No"}
+          )
+    }
+},
+{ title: 'Giá bán', 
+  key: 'price', 
+  width: 80,
+  align: 'right',
+  render(row) {
+          return h(
+            NTag,
+            { type: 'success', size: 'small', style: '' },
+            { default: () => formatCurrency(row.price)}
+          )
+    }
+  },
+  { title: 'Giá sale', 
+    key: 'sale_price', 
+    width: 80,
+    align: 'right',
+    render(row) {
+          return h(
+            NTag,
+            { type: 'success', size: 'small', style: '' },
+            { default: () => formatCurrency(row.sale_price)}
+          )
+    }
+  },
+  { title: 'Số lượng', 
+    key: 'stock', 
+    width: 80,
+    align: 'center',
+    render(row) {
+          return h(
+            NTag,
+            { type: 'success', size: 'small', style: '' },
+            { default: () => row.stock}
+          )
+    }
+  },
+  { title: 'ĐVT', 
+    key: 'unit', 
+    width: 60,
+    align: 'center',
+    render(row) {
+          return h(
+            NTag,
+            { type: 'success', size: 'small', style: '' },
+            { default: () => row.unit}
+          )
+    }
+  },
+]
 
 const columns = [
   {
-    title: 'Hình đại diện',
-    key: 'avatar',
+    title: 'Id',
+    key: 'id',
     width: 80,
-    render: ({ avatar }) =>
-      h(NAvatar, {
-        size: 'small',
-        src: avatar,
-      }),
-  },
-  { title: 'Tài khoản', key: 'username', width: 150, ellipsis: { tooltip: true } },
-  { title: 'Tên đầy đủ', key: 'full_name', width: 150, ellipsis: { tooltip: true } },
-  {
-    title: 'Vai trò',
-    key: 'roles',
-    width: 200,
     ellipsis: { tooltip: true },
-    render: ({ roles }) => {
-      if (roles?.length) {
-        return roles.map((item, index) =>
-          h(
-            NTag,
-            { type: 'success', size: 'small', title: item.name, style: index > 0 ? 'margin-left: 8px;' : '' },
-            { default: () => item.id }
-          )
-        )
-      }
-      return 'No role'
-    },
+    type: 'expand',
+    expandable: (rowData) => rowData.skus && rowData.skus.length,
+    renderExpand: (rowData) => {
+     return h(
+        NDataTable,
+        {size: 'small', columns: skusCols, data: rowData.skus, className: 'mx-40 my-2' }
+      )
+    }    
   },
+  { title: 'Danh mục sản phẩm',
+    key: 'category.cat_name',
+    width: 150,
+    ellipsis: { tooltip: true }
+  },
+  { title: 'Tên sản phẩm',
+    key: 'product_name',
+    width: 150,
+    ellipsis: { tooltip: true },
+    sorter: 'default' 
+  },
+  { title: 'Mô tả',
+    key: 'info.desc',
+    width: 150, 
+    render(row) {
+      return h(
+        NP,
+        { type: 'success' },
+        { default: () => row.seo_title }
+      )
+    }
+   },
   {
-    title: 'Giới tính',
-    key: 'gender',
+    title: 'Hoạt động',
+    key: 'active',
     width: 100,
     render(row) {
           return h(
             NTag,
             { type: 'success', size: 'small', style: '' },
-            { default: () => genders.find((item) => row.gender === item.value)?.label ?? '' }
+            { default: () => row.active === null?"-":row.active?'Active':'Inactive' }
           )
     }
   },
-  { title: 'E-mail', key: 'email', width: 150, ellipsis: { tooltip: true } },
   {
     title: 'Ngày tạo',
-    key: 'createDate',
+    key: 'created_date',
     width: 180,
     render(row) {
-      return h('span', formatDateTime(row['createTime']))
+      return h('span', formatDateTime(row['created_date']))
     },
   },
   {
-    title: 'Tình trạng',
-    key: 'enable',
-    width: 120,
-    render: (row) =>
-      h(
-        NSwitch,
-        {
-          size: 'small',
-          rubberBand: false,
-          value: row.enable,
-          loading: !!row.enableLoading,
-          onUpdateValue: () => handleEnable(row),
-        },
-        {
-          checked: () => 'Bật',
-          unchecked: () => 'Tắt',
-        }
-      ),
+    title: 'Ngày sửa',
+    key: 'updated_date',
+    width: 180,
+    render(row) {
+      return h('span', formatDateTime(row['updated_date']))
+    },
   },
   {
     title: 'Hành động',

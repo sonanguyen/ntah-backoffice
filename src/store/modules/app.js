@@ -13,6 +13,8 @@ import { defaultLayout, naiveThemeOverrides } from '@/settings'
 export const useAppStore = defineStore('app', {
   state: () => ({
     collapsed: false,
+    msgPlacement: 'top-right',
+    notiPlacement: 'bottom-right',
     isDark: useDark(),
     layout: defaultLayout,
     naiveThemeOverrides,
@@ -24,6 +26,12 @@ export const useAppStore = defineStore('app', {
     setCollapsed(b) {
       this.collapsed = b
     },
+    setMsgPlacement(v) {
+      this.msgPlacement = v
+    },
+    setNotiPlacement(v) {
+      this.notiPlacement = v
+    },
     toggleDark() {
       this.isDark = !this.isDark
     },
@@ -32,7 +40,7 @@ export const useAppStore = defineStore('app', {
     },
   },
   persist: {
-    paths: ['collapsed', 'naiveThemeOverrides'],
+    paths: ['collapsed', 'naiveThemeOverrides','msgPlacement','notiPlacement'],
     storage: localStorage,
   },
 })

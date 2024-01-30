@@ -12,7 +12,6 @@ import { useAuthStore } from '@/store'
 
 export function setupInterceptors(axiosInstance) {
   function reqResolve(config) {
-    // 处理不需要token的请求
     if (config.noNeedToken) {
       return config
     }
@@ -39,10 +38,8 @@ export function setupInterceptors(axiosInstance) {
       }
       const code = data?.code ?? status
 
-      // 根据code处理对应的操作，并返回处理后的message
       const message = resolveResError(code, data?.message ?? statusText)
 
-      //需要错误提醒
       !config?.noNeedTip && message && window.$message?.error(message)
       return Promise.reject({ code, message, error: data ?? response })
     }
@@ -52,7 +49,6 @@ export function setupInterceptors(axiosInstance) {
   async function resReject(error) {
     if (!error || !error.response) {
       const code = error?.code
-      /** 根据code处理对应的操作，并返回处理后的message */
       const message = resolveResError(code, error.message)
       window.$message?.error(message)
       return Promise.reject({ code, message, error })
@@ -62,7 +58,6 @@ export function setupInterceptors(axiosInstance) {
     const code = data?.code ?? status
 
     const message = resolveResError(code, data?.message ?? error.message)
-    /** 需要错误提醒 */
     !config?.noNeedTip && message && window.$message?.error(message)
     return Promise.reject({ code, message, error: error.response?.data || error.response })
   }

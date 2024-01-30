@@ -9,9 +9,9 @@
 import { useModal, useForm } from '.'
 
 const ACTIONS = {
-  view: '查看',
-  edit: '编辑',
-  add: '新增',
+  view: 'Xem',
+  edit: 'Sửa',
+  add: 'Thêm',
 }
 
 export const useCrud = ({ name, initForm = {}, doCreate, doDelete, doUpdate, refresh }) => {
@@ -19,22 +19,22 @@ export const useCrud = ({ name, initForm = {}, doCreate, doDelete, doUpdate, ref
   const [modalRef, okLoading] = useModal()
   const [modalFormRef, modalForm, validation] = useForm(initForm)
 
-  /** 新增 */
+  /** Add new */
   function handleAdd(row = {}, title) {
     handleOpen({ action: 'add', title, row: { ...initForm, ...row } })
   }
 
-  /** 修改 */
+  /** Edit */
   function handleEdit(row, title) {
     handleOpen({ action: 'edit', title, row })
   }
 
-  /** 查看 */
+  /** View */
   function handleView(row, title) {
     handleOpen({ action: 'view', title, row })
   }
 
-  /** 打开modal */
+  /** Open modal */
   function handleOpen(options = {}) {
     const { action, row, title, onOk } = options
     modalAction.value = action
@@ -52,7 +52,7 @@ export const useCrud = ({ name, initForm = {}, doCreate, doDelete, doUpdate, ref
     })
   }
 
-  /** 保存 */
+  /** Save */
   async function handleSave(action) {
     if (!action && !['edit', 'add'].includes(modalAction.value)) {
       return false
@@ -61,11 +61,11 @@ export const useCrud = ({ name, initForm = {}, doCreate, doDelete, doUpdate, ref
     const actions = {
       add: {
         api: () => doCreate(modalForm.value),
-        cb: () => $message.success('新增成功'),
+        cb: () => $message.success('Thêm thành công.'),
       },
       edit: {
         api: () => doUpdate(modalForm.value),
-        cb: () => $message.success('保存成功'),
+        cb: () => $message.success('Cập nhật thành công.'),
       },
     }
 
@@ -83,19 +83,19 @@ export const useCrud = ({ name, initForm = {}, doCreate, doDelete, doUpdate, ref
     }
   }
 
-  /** 删除 */
+  /** Delete */
   function handleDelete(id, confirmOptions) {
     if (!id && id !== 0) return
     const d = $dialog.warning({
-      content: '确定删除？',
-      title: '提示',
-      positiveText: '确定',
-      negativeText: '取消',
+      content: 'Bạn muốn xóa phải không?',
+      title: 'Xác nhận',
+      positiveText: 'Đồng ý',
+      negativeText: 'Hủy bỏ',
       async onPositiveClick() {
         try {
           d.loading = true
           const data = await doDelete(id)
-          $message.success('删除成功')
+          $message.success('Đã xóa thành công!')
           d.loading = false
           refresh(data)
         } catch (error) {

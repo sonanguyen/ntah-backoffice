@@ -12,12 +12,12 @@
       <template #trigger>
         <i class="i-fe:settings cursor-pointer text-32 color-primary" @click="modalRef.open()" />
       </template>
-      布局设置
+      Cài đặt giao diện
     </n-tooltip>
 
     <MeModal
       ref="modalRef"
-      title="布局设置"
+      title="Cài đặt giao diện"
       :show-footer="false"
       width="600px"
       :modal-style="{ opacity: 0.85 }"
@@ -36,7 +36,7 @@
             :type="appStore.layout === 'simple' ? 'primary' : ''"
             ghost
           >
-            简约
+            Đơn giản - Simple
           </n-button>
         </div>
         <div class="flex-col cursor-pointer justify-center" @click="appStore.setLayout('normal')">
@@ -53,7 +53,7 @@
             :type="appStore.layout === 'normal' ? 'primary' : ''"
             ghost
           >
-            通用
+            Thường dùng - Normal
           </n-button>
         </div>
 
@@ -72,7 +72,7 @@
             :type="appStore.layout === 'full' ? 'primary' : ''"
             ghost
           >
-            全面
+            Đầy đủ - Full
           </n-button>
         </div>
         <div class="flex-col cursor-pointer justify-center" @click="appStore.setLayout('empty')">
@@ -85,12 +85,22 @@
             :type="appStore.layout === 'empty' ? 'primary' : ''"
             ghost
           >
-            空白
+            Trống - Empty
           </n-button>
         </div>
       </n-space>
+      <n-space vertical>
+        <n-grid :span="24" :x-gap="24">
+        <n-form-item-gi :span="12" label="Vị trí hiển thị lỗi" class="mt-12">
+          <n-select v-model:value="msgValue" :options="options" @update:value="handleMsgValue"/>
+        </n-form-item-gi>
+        <n-form-item-gi :span="12" label="Vị trí hiển thị thông báo" class="mt-12">
+          <n-select v-model:value="notiValue" :options="options" @update:value="handleNotiValue"/>
+        </n-form-item-gi>
+      </n-grid>
+      </n-space>
       <p class="mt-16 opacity-50">
-        注: 此设置仅对未设置layout或者设置成跟随系统的页面有效，菜单设置的layout优先级最高
+        Lưu ý: Cài đặt này chỉ có tác dụng cho những trang chưa có bố cục (Layout) hoặc được đặt theo hệ thống, bố cục được đặt trong khi cài đặt Menu luôn có độ ưu tiên cao nhất.
       </p>
     </MeModal>
   </div>
@@ -103,4 +113,27 @@ import { useModal } from '@/composables'
 
 const appStore = useAppStore()
 const [modalRef] = useModal()
+
+const msgValue = ref(appStore.msgPlacement)
+const notiValue = ref(appStore.notiPlacement)
+
+const options = [
+  { label: 'Top Center', value: 'top' },
+  { label: 'Top Left', value: 'top-left' },
+  { label: 'Top Right', value: 'top-right' },
+  { label: 'Bottom', value: 'bottom' },
+  { label: 'Bottom Left', value: 'bottom-left' },
+  { label: 'Bottom Right', value: 'bottom-right' },
+]
+
+function handleMsgValue(value, option) {
+  console.log(value, option)
+  appStore.setMsgPlacement(value);
+}
+
+function handleNotiValue(value, option) {
+  console.log(value, option)
+  appStore.setNotiPlacement(value);
+}
+
 </script>

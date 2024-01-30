@@ -53,10 +53,8 @@ onMounted(() => {
   checkedKeys.value = props.value.filter((item) => !halfCheckedKeys.value.includes(item))
 })
 
-// 获取半选状态的值
 function getHalfCheckedValues(selectedValues, treeData, halfCheckedValues = []) {
   function isHalfChecked(node) {
-    // 如果存在子节点没有选中或者子节点是半选状态
     return node.children.some(
       (item) =>
         !selectedValues.includes(item[props.keyField]) ||
@@ -71,7 +69,6 @@ function getHalfCheckedValues(selectedValues, treeData, halfCheckedValues = []) 
   for (const item of treeData) {
     if (!item.children?.length) continue
     if (hasGrandson(item)) {
-      // 根据孙节点判断子节点是否是半选
       getHalfCheckedValues(selectedValues, item.children, halfCheckedValues)
       isHalfChecked(item) && halfCheckedValues.push(item[props.keyField])
     } else {

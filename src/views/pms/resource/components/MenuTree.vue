@@ -9,12 +9,12 @@
 <template>
   <div>
     <n-space vertical :size="12">
-      <h3>菜单</h3>
+      <h3>Menu</h3>
       <div class="flex">
-        <n-input v-model:value="pattern" placeholder="搜索" clearable />
+        <n-input v-model:value="pattern" placeholder="Tìm kiếm" clearable />
         <n-button class="ml-12" type="primary" @click="handleAdd()">
           <i class="i-material-symbols:add mr-4 text-14" />
-          新增
+          Tạo mới
         </n-button>
       </div>
 
@@ -60,9 +60,9 @@ const modalRef = ref(null)
 async function handleAdd(data = {}) {
   modalRef.value?.handleOpen({
     action: 'add',
-    title: '新增菜单',
+    title: 'New menu item',
     row: { type: 'MENU', ...data },
-    okText: '保存',
+    okText: 'Lưu',
   })
 }
 
@@ -81,11 +81,11 @@ function renderSuffix({ option }) {
       {
         text: true,
         type: 'primary',
-        title: '新增下级菜单',
+        title: 'Thêm menu con',
         size: 'tiny',
         onClick: withModifiers(() => handleAdd({ parentId: option.id }), ['stop']),
       },
-      { default: () => '新增' }
+      { default: () => 'Mới' }
     ),
 
     h(
@@ -97,19 +97,19 @@ function renderSuffix({ option }) {
         style: 'margin-left: 12px;',
         onClick: withModifiers(() => handleDelete(option), ['stop']),
       },
-      { default: () => '删除' }
+      { default: () => 'Xóa bỏ' }
     ),
   ]
 }
 
 function handleDelete(item) {
   $dialog.confirm({
-    content: `确认删除【${item.name}】？`,
+    content: `Bạn muốn xóa【${item.name}】`,
     async confirm() {
       try {
-        $message.loading('正在删除', { key: 'deleteMenu' })
+        $message.loading('Xóa', { key: 'deleteMenu' })
         await api.deletePermission(item.id)
-        $message.success('删除成功', { key: 'deleteMenu' })
+        $message.success('Xóa thành công', { key: 'deleteMenu' })
         emit('refresh')
       } catch (error) {
         $message.destroy('deleteMenu')

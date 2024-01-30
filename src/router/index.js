@@ -23,7 +23,7 @@ export async function setupRouter(app) {
   try {
     await initUserAndPermissions()
   } catch (error) {
-    console.error('🚀 初始化失败', error)
+    console.error('🚀 Khởi tạo không thành công!', error)
   }
   setupRouterGuards(router)
   app.use(router)

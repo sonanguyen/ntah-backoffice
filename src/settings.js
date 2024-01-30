@@ -40,7 +40,7 @@ export const naiveThemeOverrides = {
 export const basePermissions = [
   {
     code: 'ExternalLink',
-    name: '外链',
+    name: 'Liên kết bên ngoài',
     type: 'MENU',
     icon: 'i-fe:external-link',
     order: 98,
@@ -49,9 +49,9 @@ export const basePermissions = [
     children: [
       {
         code: 'MyBlog',
-        name: '博客-掘金',
+        name: 'My site',
         type: 'MENU',
-        path: 'https://juejin.cn/user/1961184475483255',
+        path: 'https://www.ntah.com.vn',
         icon: 'i-simple-icons:juejin',
         order: 1,
         enable: true,

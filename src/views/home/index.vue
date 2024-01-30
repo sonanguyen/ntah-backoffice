@@ -16,29 +16,28 @@
             <span class="text-20 opacity-80">
               Hello, {{ userStore.nickName ?? userStore.username }}
             </span>
-            <span class="mt-4 opacity-50">当前角色：{{ userStore.currentRole?.name }}</span>
+            <span class="mt-4 opacity-50">Role：{{ userStore.currentRole?.name }}</span>
           </div>
         </div>
 
-        <p class="mt-28 text-14 opacity-60">一个人几乎可以在任何他怀有无限热忱的事情上成功。</p>
-        <p class="mt-12 text-right text-12 opacity-40">—— 查尔斯·史考伯</p>
+        <p class="mt-28 text-14 opacity-60">Một người có thể thành công trong hầu hết mọi việc mà anh ta có lòng nhiệt tình vô hạn.</p>
+        <p class="mt-12 text-right text-12 opacity-40">--Charles Scober</p>
       </n-card>
-      <n-card class="ml-12 w-70%" title="✨ 欢迎使用 Vue Naive Admin 2.0">
+      <n-card class="ml-12 w-70%" title="✨ Welcome to Oliver Admin 0.1">
         <template #header-extra>
           <a
             class="text-14 text-primary text-highlight hover:underline hover:opacity-80"
             href="https://isme.top"
             target="_blank"
-            @click.prevent="message?.info('官网正在火速开发中...')"
+            @click.prevent="message?.info('Trang đang được phát triển...')"
           >
-            isme.top
+            www.ntah.com.vn
           </a>
         </template>
 
         <p class="opacity-60">
-          这是一款极简风格的后台管理模板，包含前后端解决方案，前端使用 Vite + Vue3 + Pinia +
-          Unocss，后端使用 Nestjs + TypeOrm +
-          MySql，简单易用，赏心悦目，历经十几次重构和细节打磨，诚意满满！！
+          Đây là mẫu quản lý back-end tối giản bao gồm các giải pháp front-end và back-end, front-end sử dụng Vite + Vue3 + Pinia +
+           Unocss, phần phụ trợ sử dụng Nestjs + TypeOrm + Postgres dễ sử dụng và đẹp mắt!
         </p>
         <footer class="mt-12 flex items-center justify-end">
           <n-button
@@ -48,7 +47,7 @@
             href="https://docs.isme.top/web/#/624306705/188522224"
             target="__blank"
           >
-            开发文档
+          Tài liệu phát triển
           </n-button>
           <n-button
             type="primary"
@@ -57,97 +56,97 @@
             href="https://github.com/zclzone/vue-naive-admin/tree/2.x"
             target="__blank"
           >
-            代码仓库
+            Code
           </n-button>
         </footer>
       </n-card>
     </div>
     <div class="mt-12 flex">
-      <n-card class="w-50%" title="💯 特性" segmented>
+      <n-card class="w-50%" title="💯 Chất lượng" segmented>
         <template #header-extra>
-          <span class="opacity-90 text-highlight">👏 历经十几次重构和细节打磨</span>
+          <span class="opacity-90 text-highlight">👏 Luôn cập nhật để hoàn thiện hơn</span>
         </template>
 
         <ul class="opacity-90">
           <li class="py-4">
-            🆒 使用
+            🆒 Sử dụng
             <b>Vue3</b>
-            主流技术栈:
+            Technical stack:
             <span class="text-highlight">Vite + Vue3 + Pinia</span>
           </li>
           <li class="py-4">
-            🍇 使用
-            <b>原子CSS</b>
-            框架:
+            🍇 Sử dụng
+            <b>UNOCSS</b>
+            Framework:
             <span class="text-highlight">Unocss</span>
-            ，优雅、轻量、易用
+            ，Sang, xịn, mịn và dễ xài
           </li>
           <li class="py-4">
-            🤹 使用主流的
+            🤹 Biểu tượng
             <span class="text-highlight">iconify + unocss</span>
-            图标方案，支持自定义图标，支持动态渲染
+            Hỗ trợ tùy chỉnh và hiển thị linh hoạt
           </li>
           <li class="py-4">
-            🎨 使用 Naive UI，
-            <span class="text-highlight">极致简洁的代码风格和清爽的页面设计</span>
-            ，审美在线，主题轻松定制
+            🎨 Sử dụng Naive UI，
+            <span class="text-highlight">Đơn giản, linh hoạt và cực kỳ dễ dùng</span>
+            ，Theme tùy chỉnh trực tiếp
           </li>
           <li class="py-4">
-            👏 先进且易于理解的文件结构设计，多个模块之间
-            <b>零耦合</b>
-            ，单个业务模块删除不影响其他模块
+            👏 Cấu trúc modules đơn giản, linh hoạt
+            <b>độc lập</b>
+            ，xóa modules không ảnh hưởng modules khác.
           </li>
           <li class="py-4">
             🚀
-            <span class="text-highlight">扁平化路由</span>
-            设计，每一个组件都可以是一个页面，告别多级路由 KeepAlive 难实现问题
+            <span class="text-highlight">Flat router</span>
+            Mỗi route được thiết kế không phụ thuộc nhau, tạm biệt router đa cấp.
           </li>
 
           <li class="py-4">
             🍒
-            <span class="text-highlight">基于权限动态生成路由</span>
-            ，无需额外定义路由，
-            <span class="text-highlight">403和404可区分</span>
-            ，而不是无权限也跳404
+            <span class="text-highlight">Tự động tạo route đựa trên quyền</span>
+            ，không cần xác định route bổ sung，
+            <span class="text-highlight">Phân biệt lỗi 403 vs 404</span>
+            ，thay vì hiển thị 404 nếu trang không được phép
           </li>
           <li class="py-4">
-            🔐 基于Redis集成
-            <span class="text-highlight">无感刷新</span>
-            ，用户登录态可控，安全与体验缺一不可
+            🔐 Tích hợp Redis
+            <span class="text-highlight">No Refresh</span>
+            ，Trạng thái đăng nhập của người dùng luôn được kiểm soát và bảo mật
           </li>
           <li class="py-4">
-            ✨ 基于 Naive UI 封装
-            <span class="text-highlight">message</span>
-            全局工具方法，支持批量提醒，支持跨页面共享实例
+            ✨ Dựa trên Naive UI 
+            <span class="text-highlight">Message</span>
+            Thông báo chung chia sẻ toàn hệ thống
           </li>
           <li class="py-4">
-            ⚡️ 基于 Naive UI 封装常用的业务组件，包含
+            ⚡️ Các thành phần khác của Naive UI
             <span class="text-highlight">Page</span>
-            组件、
+            components
             <span class="text-highlight">CRUD</span>
-            表格组件及
+            Data table
             <span class="text-highlight">Modal</span>
-            组件，减少大量重复性工作
+            Hộp thoại
           </li>
         </ul>
 
         <n-divider class="mb-0! mt-12!">
           <p class="text-14 opacity-60">
-            👉点击
+            👉Nhấn vào đây
             <b class="mx-2 transition hover:text-primary">
-              <a href="https://isme.top" target="_blank">更多</a>
+              <a href="https://isme.top" target="_blank">để biết thêm</a>
             </b>
-            查看更多实用功能，持续开发中...
+            những chức năng khác...
           </p>
         </n-divider>
       </n-card>
 
-      <n-card class="ml-12 w-50%" title="🛠️ 技术栈" segmented>
+      <n-card class="ml-12 w-50%" title="🛠️ Technical stack" segmented>
         <VChart :option="skillOption" autoresize />
       </n-card>
     </div>
 
-    <n-card class="mt-12" title="⚡️ 趋势" segmented>
+    <n-card class="mt-12" title="⚡️ Trend" segmented>
       <VChart :option="trendOption" :init-options="{ height: 400 }" autoresize />
     </n-card>
   </AppPage>

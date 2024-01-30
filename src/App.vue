@@ -9,8 +9,8 @@
 <template>
   <n-config-provider
     class="wh-full"
-    :locale="zhCN"
-    :date-locale="dateZhCN"
+    :locale="viVN"
+    :date-locale="dateViVN"
     :theme="appStore.isDark ? darkTheme : undefined"
     :theme-overrides="appStore.naiveThemeOverrides"
   >
@@ -27,7 +27,7 @@
 </template>
 
 <script setup>
-import { zhCN, dateZhCN, darkTheme } from 'naive-ui'
+import { viVN, dateViVN, darkTheme } from 'naive-ui'
 import { LayoutSetting } from '@/components'
 import { useCssVar } from '@vueuse/core'
 import { kebabCase } from 'lodash-es'
@@ -35,7 +35,6 @@ import { useAppStore, useTabStore } from '@/store'
 
 const layouts = new Map()
 function getLayout(name) {
-  // 利用map将加载过的layout缓存起来，防止重新加载layout导致页面闪烁
   if (layouts.get(name)) return layouts.get(name)
   const layout = markRaw(defineAsyncComponent(() => import(`@/layouts/${name}/index.vue`)))
   layouts.set(name, layout)

@@ -23,6 +23,10 @@ export function formatDate(date = undefined, format = 'YYYY-MM-DD') {
   return formatDateTime(date, format)
 }
 
+export function formatCurrency(val = 0, locale = 'vi-VN') {
+  return `${Number(val).toLocaleString(locale)} đ`
+}
+
 /**
  * @desc  函数节流
  * @param {Function} fn

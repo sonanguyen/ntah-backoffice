@@ -8,7 +8,7 @@
 
 <template>
   <div class="auto-bg" :class="{ 'card-border': bordered }">
-    <slot />
+    <slot></slot>
   </div>
 </template>
 

@@ -29,43 +29,43 @@
               @click="handleEdit(currentMenu)"
             >
               <i class="i-material-symbols:edit-outline mr-4 text-14" />
-              编辑
+              Chỉnh sửa
             </n-button>
           </div>
           <n-descriptions label-placement="left" bordered :column="2">
-            <n-descriptions-item label="编码">{{ currentMenu.code }}</n-descriptions-item>
-            <n-descriptions-item label="名称">{{ currentMenu.name }}</n-descriptions-item>
-            <n-descriptions-item label="路由地址">
+            <n-descriptions-item label="Mã số tài nguyên">{{ currentMenu.code }}</n-descriptions-item>
+            <n-descriptions-item label="Tên tài nguyên">{{ currentMenu.name }}</n-descriptions-item>
+            <n-descriptions-item label="Route">
               {{ currentMenu.path ?? '--' }}
             </n-descriptions-item>
-            <n-descriptions-item label="组件路径">
+            <n-descriptions-item label="View Path">
               {{ currentMenu.component ?? '--' }}
             </n-descriptions-item>
-            <n-descriptions-item label="菜单图标">
+            <n-descriptions-item label="Icon">
               <span v-if="currentMenu.icon" class="flex items-center">
                 <i :class="`${currentMenu.icon}?mask text-22 mr-8`" />
                 <span class="opacity-50">{{ currentMenu.icon }}</span>
               </span>
-              <span v-else>无</span>
+              <span v-else>None</span>
             </n-descriptions-item>
             <n-descriptions-item label="layout">
-              {{ currentMenu.layout || '跟随系统' }}
+              {{ currentMenu.layout || 'Mặc định hệ thống' }}
             </n-descriptions-item>
-            <n-descriptions-item label="是否显示">
-              {{ currentMenu.show ? '是' : '否' }}
+            <n-descriptions-item label="Hiển thị?">
+              {{ currentMenu.show ? 'Có' : 'Không' }}
             </n-descriptions-item>
-            <n-descriptions-item label="是否启用">
-              {{ currentMenu.enable ? '是' : '否' }}
+            <n-descriptions-item label="Cho phép">
+              {{ currentMenu.enable ? 'Có' : 'Không' }}
             </n-descriptions-item>
             <n-descriptions-item label="KeepAlive">
-              {{ currentMenu.keepAlive ? '是' : '否' }}
+              {{ currentMenu.keepAlive ? 'Có' : 'Không' }}
             </n-descriptions-item>
-            <n-descriptions-item label="排序">
+            <n-descriptions-item label="Thứ tự hiển thị">
               {{ currentMenu.order ?? '--' }}
             </n-descriptions-item>
           </n-descriptions>
         </template>
-        <n-empty v-else class="h-450 f-c-c" size="large" description="请选择菜单查看详情" />
+        <n-empty v-else class="h-450 f-c-c" size="large" description="Chọn một menu để xem chi tiết" />
       </div>
     </div>
     <ResAddOrEdit ref="modalRef" :menus="treeData" @refresh="initData" />
@@ -95,9 +95,9 @@ const modalRef = ref(null)
 function handleEdit(item = {}) {
   modalRef.value?.handleOpen({
     action: 'edit',
-    title: '编辑菜单 - ' + item.name,
+    title: 'Chỉnh sửa - ' + item.name,
     row: item,
-    okText: '保存',
+    okText: 'Lưu',
   })
 }
 </script>

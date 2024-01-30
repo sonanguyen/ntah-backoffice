@@ -1,3 +1,4 @@
+<!-- eslint-disable no-undef -->
 <!--------------------------------
  - @Author: Ronnie Zhang
  - @LastEditor: Ronnie Zhang
@@ -12,7 +13,7 @@
       class="m-auto max-w-700 min-w-345 f-c-c rounded-8 bg-opacity-20 bg-cover p-12 card-shadow auto-bg"
     >
       <div class="hidden w-380 px-20 py-35 md:block">
-        <img src="@/assets/images/login_banner.webp" class="w-full" alt="login_banner" />
+        <img src="@/assets/images/login_banner.png" class="w-full" alt="login_banner" />
       </div>
 
       <div class="w-320 flex-col px-20 py-32">
@@ -24,7 +25,7 @@
           v-model:value="loginInfo.username"
           autofocus
           class="mt-32 h-40 items-center"
-          placeholder="请输入用户名"
+          placeholder="Tên người dùng"
           :maxlength="20"
         >
           <template #prefix>
@@ -36,7 +37,7 @@
           class="mt-20 h-40 items-center"
           type="password"
           show-password-on="mousedown"
-          placeholder="请输入密码"
+          placeholder="Mật khẩu"
           :maxlength="20"
           @keydown.enter="handleLogin()"
         >
@@ -49,7 +50,7 @@
           <n-input
             v-model:value="loginInfo.captcha"
             class="h-40 items-center"
-            palceholder="请输入验证码"
+            palceholder="Mã CAPCHA"
             :maxlength="4"
             @keydown.enter="handleLogin()"
           >
@@ -60,7 +61,7 @@
           <img
             v-if="captchaUrl"
             :src="captchaUrl"
-            alt="验证码"
+            alt="Mã xác nhận"
             height="40"
             class="ml-12 w-80 cursor-pointer"
             @click="initCaptcha"
@@ -70,7 +71,7 @@
         <n-checkbox
           class="mt-20"
           :checked="isRemember"
-          label="记住我"
+          label="Lưu đăng nhập"
           :on-update:checked="(val) => (isRemember = val)"
         />
 
@@ -81,7 +82,7 @@
             ghost
             @click="quickLogin()"
           >
-            一键体验
+            Đăng nhập nhanh
           </n-button>
 
           <n-button
@@ -90,7 +91,7 @@
             :loading="loading"
             @click="handleLogin()"
           >
-            登录
+            Đăng nhập
           </n-button>
         </div>
       </div>
@@ -142,8 +143,8 @@ if (isLogined.value) {
 }
 
 function quickLogin() {
-  loginInfo.value.username = 'admin'
-  loginInfo.value.password = '123456'
+  loginInfo.value.username = 'eadmin'
+  loginInfo.value.password = 'Password1'
   handleLogin(true)
 }
 
@@ -151,12 +152,12 @@ const isRemember = useStorage('isRemember', true)
 const loading = ref(false)
 async function handleLogin(isQuick) {
   const { username, password, captcha } = loginInfo.value
-  if (!username || !password) return $message.warning('请输入用户名和密码')
-  if (!isQuick && !captcha) return $message.warning('请输入验证码')
+  if (!username || !password) return $message.warning('Vui lòng nhập tên tài khoản và mật khẩu')
+  if (!isQuick && !captcha) return $message.warning('Nhập mã xác nhận')
   try {
     loading.value = true
-    $message.loading('正在验证，请稍后...', { key: 'login' })
-    const { data } = await api.login({ username, password: password.toString(), captcha, isQuick })
+    $message.loading('Đang đăng nhập, vui lòng đợi...', { key: 'login' })
+    const { data } = await api.login({ userId:username, pwd: password.toString(), captcha, isQuick })
     if (isRemember.value) {
       lStorage.set('loginInfo', { username, password })
     } else {
@@ -164,9 +165,9 @@ async function handleLogin(isQuick) {
     }
     onLoginSuccess(data)
   } catch (error) {
-    // 10003为验证码错误专属业务码
+    // 10003 - Lỗi xác minh
     if (error?.code === 10003) {
-      // 为防止爆破，验证码错误则刷新验证码
+      // Refresh mã xác minh
       initCaptcha()
     }
     $message.destroy('login')
@@ -177,10 +178,10 @@ async function handleLogin(isQuick) {
 
 async function onLoginSuccess(data = {}) {
   authStore.setToken(data)
-  $message.loading('登录中...', { key: 'login' })
+  $message.loading('Đăng nhập...', { key: 'login' })
   try {
     await initUserAndPermissions()
-    $message.success('登录成功', { key: 'login' })
+    $message.success('Đăng nhập thành công', { key: 'login' })
     if (route.query.redirect) {
       const path = route.query.redirect
       delete route.query.redirect
